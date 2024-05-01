@@ -90,7 +90,7 @@ if (String(jsonresponse.files[i1].size) != "-1")
     content +="</svg></td>";
     content +="<TD class='btnimg' style=\"padding:0px;\"><a href=\""+jsonresponse.path+jsonresponse.files[i1].name+"\" target=_blank><div class=\"blacklink\">";
     content +=jsonresponse.files[i1].name;
-    if ((jsonresponse.files[i1].name == "index.html.gz")||(jsonresponse.files[i1].name == "index.html")){
+    if (jsonresponse.files[i1].name == "index.html.br"||jsonresponse.files[i1].name == "index.html.gz"||jsonresponse.files[i1].name == "index.html"){
         display_message = false;
     }
     content +="</div></a></TD><TD>";
@@ -130,14 +130,13 @@ if(display_time){
 } else {
     document.getElementById('FS_time').innerHTML = "Time";
 }
- if (display_message) {
-    
-    document.getElementById('MSG').innerHTML = "File index.html.gz is missing, please upload it";
- } else {
-     document.getElementById('MSG').innerHTML = "<a href='/' class= 'btn btn-primary'>Go to ESP3D interface</a>";
- }
- document.getElementById('file_list').innerHTML=content;
- document.getElementById('path').innerHTML=navbar();}
+if (display_message) {
+    document.getElementById('MSG').innerHTML = "File index.html is missing, please upload it";
+} else {
+    document.getElementById('MSG').innerHTML = "<a href='/' class= 'btn btn-primary'>Go to ESP3D interface</a>";
+}
+document.getElementById('file_list').innerHTML=content;
+document.getElementById('path').innerHTML=navbar();}
 
 function Delete(filename){
 if (confirm("Confirm deletion of file: " + filename))SendCommand("delete",filename);

@@ -6,6 +6,7 @@
     "deprecated": "latest",
     "fs": "latest",
     "gulp": "^4.0.0",
+    "gulp-brotli": "latest",
     "gulp-bytediff": "latest",
     "gulp-cdnizer": "latest",
     "gulp-clean-css": "latest",

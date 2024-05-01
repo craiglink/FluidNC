@@ -232,7 +232,7 @@ namespace WebUI {
 #    endif
     }
 
-    // Send a file, either the specified path or path.gz
+    // Send a file, either the specified path, path.br or path.gz
     bool Web_Server::myStreamFile(const char* path, bool download) {
         std::error_code ec;
         FluidPath       fpath { path, localfsName, ec };
@@ -240,14 +240,24 @@ namespace WebUI {
             return false;
         }
 
+        bool        isBrotli = false;
+        bool        isGzip = false;
+
         std::string hash;
         // Check for brower cache match
 
         hash = HashFS::hash(fpath);
         if (!hash.length()) {
+            std::filesystem::path brpath(fpath);
+            brpath += ".br";
+            hash = HashFS::hash(brpath);
+            isBrotli = true;
+        }
+        if (!hash.length()) {
             std::filesystem::path gzpath(fpath);
             gzpath += ".gz";
             hash = HashFS::hash(gzpath);
+            isGzip = true;
         }
 
         if (hash.length() && std::string(_webserver->header("If-None-Match").c_str()) == hash) {
@@ -267,16 +277,14 @@ namespace WebUI {
             return true;
         }
 
-        bool        isGzip = false;
         FileStream* file;
         try {
             file = new FileStream(path, "r", "");
         } catch (const Error err) {
             try {
-                std::filesystem::path gzpath(fpath);
-                gzpath += ".gz";
-                file   = new FileStream(gzpath, "r", "");
-                isGzip = true;
+                std::filesystem::path compressed(fpath);
+                compressed += isBrotli ? ".br" : ".gz";
+                file   = new FileStream(compressed, "r", "");
             } catch (const Error err) {
                 log_debug(path << " not found");
                 return false;
@@ -289,7 +297,10 @@ namespace WebUI {
             _webserver->sendHeader("ETag", hash.c_str());
         }
         _webserver->setContentLength(file->size());
-        if (isGzip) {
+        if (isBrotli) {
+            _webserver->sendHeader("Content-Encoding", "br");
+        }
+        else if (isGzip) {
             _webserver->sendHeader("Content-Encoding", "gzip");
         }
         _webserver->send(200, getContentType(path), "");
@@ -1177,9 +1188,9 @@ namespace WebUI {
         const char* mime_type;
     } mime_types[] = {
         { ".htm", "text/html" },         { ".html", "text/html" },        { ".css", "text/css" },   { ".js", "application/javascript" },
-        { ".htm", "text/html" },         { ".png", "image/png" },         { ".gif", "image/gif" },  { ".jpeg", "image/jpeg" },
+        { ".png", "image/png" },         { ".gif", "image/gif" },         { ".jpeg", "image/jpeg" },
         { ".jpg", "image/jpeg" },        { ".ico", "image/x-icon" },      { ".xml", "text/xml" },   { ".pdf", "application/x-pdf" },
-        { ".zip", "application/x-zip" }, { ".gz", "application/x-gzip" }, { ".txt", "text/plain" }, { "", "application/octet-stream" }
+        { ".zip", "application/x-zip" }, { ".gz", "application/x-gzip" }, { ".txt", "text/plain" }, { "", "application/octet-stream" },
     };
     static bool endsWithCI(const char* suffix, const char* test) {
         size_t slen = strlen(suffix);

@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     del = require('del'),
     zip = require('gulp-zip'),
     gzip = require('gulp-gzip'),
+    brotli = require('gulp-brotli'),
     htmlmin = require('gulp-htmlmin'),
     replace = require('gulp-replace'),
     fs = require('fs'),
@@ -103,7 +104,7 @@ function smoosh() {
 
 function compress() {
     return gulp.src('dist/tool.html')
-        .pipe(gzip())
+        .pipe(gulpBrotli.compress())
         .pipe(gulp.dest('.'));
 }
 

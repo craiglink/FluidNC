@@ -62,9 +62,9 @@ The Bluetooth version can start with an empty local filesystem.
 The disadvantage of replacing the local filesystem is that it will
 overwrite any files that you might already have there, such as FluidNC
 config files, WebUI preferences and macros.  The advantage is that you
-will get the latest version of the index.html.gz file that contains
-the WebUI code.  Another way to get a new index.html.gz is to upload
-it via WebUI from wifi/index.html.gz herein.
+will get the latest version of the index.html.br file that contains
+the WebUI code.  Another way to get a new index.html.br is to upload
+it via WebUI from wifi/index.html.br herein.
 
 A good approach is to use install-fs only on your first FluidNC
 installation, to start from a clean slate.

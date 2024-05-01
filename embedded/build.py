@@ -1,5 +1,5 @@
 # Creates a NoFile.h include file that contains the embedded
-# web page that is used when index.html.gz is missing
+# web page that is used when index.html.br is missing
 # NoFile.h is created from the code in <FluidNC>/embedded
 
 import subprocess, sys
@@ -32,7 +32,7 @@ subprocess.run(["npm", "install"])
 subprocess.run(["npm", "audit", "fix"])
 subprocess.run(["gulp", "package"])
 
-with open('tool.html.gz', 'rb') as f:
+with open('tool.html.br', 'rb') as f:
     data = f.read()
 
 out = bin2header(data, 'PAGE_NOFILES')

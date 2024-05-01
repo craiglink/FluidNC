@@ -81,7 +81,8 @@ os.makedirs(manifestRelPath)
 # Copy the web application to the release directory
 dataRelPath = os.path.join(manifestRelPath, 'data')
 os.makedirs(dataRelPath)
-shutil.copy(os.path.join("FluidNC", "data", "index.html.gz"), dataRelPath)
+html = shutil.copy(os.path.join("FluidNC", "data", "index.html"), dataRelPath)
+subprocess.run(["brotli", html])
 
 manifest = {
         "name": "FluidNC",
@@ -274,12 +275,12 @@ for platform in ['win64', 'posix']:
             bootloader = 'bootloader.bin'
             zipObj.write(os.path.join(pioPath, envName, bootloader), os.path.join(zipDirName, envName, bootloader))
 
-            # Put littlefs.bin and index.html.gz in the archive
-            # bt does not need a littlefs.bin because there is no use for index.html.gz
+            # Put littlefs.bin and index.html.br in the archive
+            # bt does not need a littlefs.bin because there is no use for index.html.br
             if envName == 'wifi':
                 name = 'littlefs.bin'
                 zipObj.write(os.path.join(pioPath, envName, name), os.path.join(zipDirName, envName, name))
-                name = 'index.html.gz'
+                name = 'index.html.br'
                 zipObj.write(os.path.join('FluidNC', 'data', name), os.path.join(zipDirName, envName, name))
 
             objPath = os.path.join(pioPath, envName)
