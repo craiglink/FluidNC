@@ -14,7 +14,7 @@
 
     Calibration is part of the setting (TBD) fixed at 1.00 now
 */
-
+#ifndef NO_SERVO
 #include "Servo.h"
 #include "../Machine/MachineConfig.h"
 
@@ -46,3 +46,4 @@ namespace MotorDrivers {
         log_info("    Update timer for " << object->name() << " at " << interval << " ms");
     }
 }
+#endif // NO_SERVO

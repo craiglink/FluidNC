@@ -5,6 +5,11 @@
 #pragma once
 
 #ifndef ENABLE_BLUETOOTH
+#    include "../Configuration/Configurable.h"
+#    include "../Config.h"    // ENABLE_*
+#    include "../Settings.h"  // ENABLE_*
+#    include "../lineedit.h"
+
 namespace WebUI {
     class BTConfig {
     public:

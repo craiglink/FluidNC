@@ -32,7 +32,7 @@
         direction_invert: false
 
 */
-
+#ifndef NO_SERVO
 #include "Solenoid.h"
 
 #include "../Machine/MachineConfig.h"
@@ -123,3 +123,4 @@ namespace MotorDrivers {
         MotorFactory::InstanceBuilder<Solenoid> registration("solenoid");
     }
 }
+#endif // NO_SERVO

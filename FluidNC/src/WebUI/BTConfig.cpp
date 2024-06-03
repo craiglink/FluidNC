@@ -1,14 +1,18 @@
 // Copyright (c) 2014 Luc Lebosse. All rights reserved.
 // Use of this source code is governed by a GPLv3 license that can be found in the LICENSE file.
-
-#ifdef ENABLE_BLUETOOTH
-
 #    include "BTConfig.h"
 
 #    include "../Machine/MachineConfig.h"
 #    include "../Report.h"  // CLIENT_*
 #    include "Commands.h"   // COMMANDS
 #    include "WebSettings.h"
+
+#ifndef ENABLE_BLUETOOTH
+namespace WebUI {
+    BTConfig        bt_config;
+}
+#else
+
 
 #    include "esp_bt.h"
 #    include "esp_bt_main.h"

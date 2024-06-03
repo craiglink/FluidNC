@@ -1,6 +1,6 @@
 // Copyright (c) 2020 -	Bart Dring
 // Use of this source code is governed by a GPLv3 license that can be found in the LICENSE file.
-
+#ifndef NO_TMC
 #include "TMC5160Driver.h"
 #include "../Machine/MachineConfig.h"
 #include <atomic>
@@ -119,3 +119,4 @@ namespace MotorDrivers {
         MotorFactory::InstanceBuilder<TMC5160Driver> registration("tmc_5160");
     }
 }
+#endif // NO_TMC

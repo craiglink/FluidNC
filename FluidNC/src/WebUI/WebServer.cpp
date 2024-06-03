@@ -21,7 +21,6 @@
 #    include <Update.h>
 #    include <esp_wifi_types.h>
 #    include <ESPmDNS.h>
-#    include <ESP32SSDP.h>
 #    include <DNSServer.h>
 #    include "WebSettings.h"
 
@@ -40,8 +39,9 @@ namespace WebUI {
     const byte DNS_PORT = 53;
     DNSServer  dnsServer;
 }
-
+#ifndef NO_GLOBAL_ARDUINOOTA
 #    include <esp_ota_ops.h>
+#endif
 
 //embedded response file if no files on LocalFS
 #    include "NoFile.h"
@@ -144,8 +144,10 @@ namespace WebUI {
         //LocalFS
         _webserver->on("/files", HTTP_ANY, handleFileList, LocalFSFileupload);
 
+#ifndef NO_GLOBAL_ARDUINOOTA
         //web update
         _webserver->on("/updatefw", HTTP_ANY, handleUpdate, WebUpdateUpload);
+#endif // NO_GLOBAL_ARDUINOOTA        
 
         //Direct SD management
         _webserver->on("/upload", HTTP_ANY, handle_direct_SDFileList, SDFileUpload);
@@ -779,6 +781,7 @@ namespace WebUI {
 
     //Web Update handler
     void Web_Server::handleUpdate() {
+#ifndef NO_GLOBAL_ARDUINOOTA
         AuthenticationLevel auth_level = is_authenticated();
         if (auth_level != AuthenticationLevel::LEVEL_ADMIN) {
             _upload_status = UploadStatus::NONE;
@@ -795,10 +798,12 @@ namespace WebUI {
         } else {
             _upload_status = UploadStatus::NONE;
         }
+#endif        
     }
 
     //File upload for Web update
     void Web_Server::WebUpdateUpload() {
+#ifndef NO_GLOBAL_ARDUINOOTA
         static size_t   last_upload_update;
         static uint32_t maxSketchSpace = 0;
 
@@ -890,6 +895,7 @@ namespace WebUI {
             cancelUpload();
             Update.end();
         }
+#endif // NO_GLOBAL_ARDUINOOTA        
     }
 
     void Web_Server::handleFileOps(const char* fs) {

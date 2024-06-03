@@ -89,8 +89,11 @@ namespace WebUI {
             j.member("FWVersion", git_info);
             j.member("FWTarget", "FluidNC");
             j.member("FWTargetId", "60");
+#ifndef NO_GLOBAL_ARDUINOOTA
             j.member("WebUpdate", "Enabled");
-
+#else            
+            j.member("WebUpdate", "DIsabled");
+#endif // NO_GLOBAL_ARDUINOOTA
             j.member("Setup", "Disabled");
             j.member("SDConnection", "direct");
             j.member("SerialProtocol", "Socket");

@@ -14,7 +14,7 @@
     Homing simply sets the axis Mpos to the endpoint as determined by homing/mpos
 
 */
-
+#ifndef NO_SERVO
 #include "RcServo.h"
 
 #include "../Machine/MachineConfig.h"
@@ -130,3 +130,4 @@ namespace MotorDrivers {
         MotorFactory::InstanceBuilder<RcServo> registration("rc_servo");
     }
 }
+#endif // NO_SERVO

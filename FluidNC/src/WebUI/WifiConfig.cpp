@@ -26,7 +26,9 @@ WebUI::WiFiConfig wifi_config __attribute__((init_priority(109)));
 #    include "Driver/localfs.h"
 #    include <cstring>
 
+#ifndef NO_GLOBAL_ARDUINOOTA
 #    include <esp_ota_ops.h>
+#endif
 
 namespace WebUI {
     enum WiFiStartupMode {
@@ -196,12 +198,14 @@ namespace WebUI {
         if (mode != WIFI_MODE_NULL) {
             //Is OTA available ?
             size_t flashsize = 0;
+#ifndef NO_GLOBAL_ARDUINOOTA
             if (esp_ota_get_running_partition()) {
                 const esp_partition_t* partition = esp_ota_get_next_update_partition(NULL);
                 if (partition) {
                     flashsize = partition->size;
                 }
             }
+#endif // NO_GLOBAL_ARDUINOOTA            
             addIdValueObject(j, "Available Size for update", formatBytes(flashsize));
             addIdValueObject(j, "Available Size for LocalFS", formatBytes(localfs_size()));
             addIdValueObject(j, "Web port", webServer.port());
@@ -329,12 +333,14 @@ namespace WebUI {
         if (mode != WIFI_MODE_NULL) {
             //Is OTA available ?
             size_t flashsize = 0;
+#ifndef NO_GLOBAL_ARDUINOOTA            
             if (esp_ota_get_running_partition()) {
                 const esp_partition_t* partition = esp_ota_get_next_update_partition(NULL);
                 if (partition) {
                     flashsize = partition->size;
                 }
             }
+#endif // NO_GLOBAL_ARDUINOOTA            
             log_stream(out, "Available Size for update: " << formatBytes(flashsize));
             log_stream(out, "Available Size for LocalFS: " << formatBytes(localfs_size()));
             log_stream(out, "Web port: " << webServer.port());
@@ -692,7 +698,8 @@ namespace WebUI {
         // allowing external network traffic to use a lot of the heap.
         // The bawin parameters are for AMPDU aggregation.
         // rx: static dynamic bawin  tx: static dynamic bawin cache
-        WiFi.setBuffers(4, 5, 0, 4, 0, 0, 4);
+//        WiFi.setBuffers(4, 5, 0, 4, 0, 0, 4);
+        WiFi.setBuffers(5, 6, 0, 4, 0, 0, 4);
 
         //SSID
         const char* SSID = wifi_sta_ssid->get();

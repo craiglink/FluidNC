@@ -1,3 +1,4 @@
+#ifndef ONLY_CARTESIAN
 #include "Midtbot.h"
 /*
 
@@ -17,3 +18,4 @@ namespace Kinematics {
         KinematicsFactory::InstanceBuilder<Midtbot> registration("midtbot");
     }
 }
+#endif // ONLY_CARTESIAN

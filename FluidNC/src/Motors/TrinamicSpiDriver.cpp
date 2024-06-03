@@ -4,7 +4,7 @@
 /*
     This is used for Trinamic SPI controlled stepper motor drivers.
 */
-
+#ifndef NO_TMC
 #include "TrinamicSpiDriver.h"
 #include "../Machine/MachineConfig.h"
 #include <TMCStepper.h>  // https://github.com/teemuatlut/TMCStepper
@@ -51,3 +51,4 @@ namespace MotorDrivers {
     }
 
 }
+#endif // NO_TMC

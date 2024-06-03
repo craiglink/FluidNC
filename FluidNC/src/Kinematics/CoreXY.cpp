@@ -1,3 +1,4 @@
+#ifndef ONLY_CARTESIAN
 #include "CoreXY.h"
 
 #include "../Machine/MachineConfig.h"
@@ -148,3 +149,4 @@ namespace Kinematics {
         KinematicsFactory::InstanceBuilder<CoreXY> registration("CoreXY");
     }
 }
+#endif // ONLY_CARTESIAN

@@ -5,6 +5,8 @@
 #include "Configuration/Configurable.h"
 
 #include "Channel.h"
+
+#ifndef NO_OLED
 #include "SSD1306_I2C.h"
 
 typedef const uint8_t* font_t;
@@ -129,3 +131,75 @@ public:
         handler.item("radio_delay_ms", _radio_delay);
     }
 };
+#else
+
+#ifdef ARDUINO
+//#include <Arduino.h>
+
+#include "esp_arduino_version.h"
+#include "esp32-hal.h"
+//#include "esp8266-compat.h"
+//#include "soc/gpio_reg.h"
+
+#elif __MBED__
+#define pgm_read_byte(addr)   (*(const unsigned char *)(addr))
+
+#include <mbed.h>
+#define delay(x)	wait_ms(x)
+#define yield()		void()
+
+/*
+ * This is a little Arduino String emulation to keep the OLEDDisplay
+ * library code in common between Arduino and mbed-os
+ */
+class String {
+public:
+	String(const char *s) { _str = s; };
+	int length() { return strlen(_str); };
+	const char *c_str() { return _str; };
+    void toCharArray(char *buf, unsigned int bufsize, unsigned int index = 0) const {
+		memcpy(buf, _str + index,  std::min(bufsize, strlen(_str)));
+	};
+private:
+	const char *_str;
+};
+
+#else
+#error "Unkown operating system"
+#endif
+
+class OLED : public Channel, public Configuration::Configurable {
+
+public:
+    OLED() : Channel("oled") {}
+
+    OLED(const OLED&) = delete;
+    OLED(OLED&&)      = delete;
+    OLED& operator=(const OLED&) = delete;
+    OLED& operator=(OLED&&) = delete;
+
+    virtual ~OLED() = default;
+
+    void init() {}
+
+    size_t write(uint8_t data) override { return 0; };
+
+    int read(void) override { return -1; }
+    int peek(void) override { return -1; }
+
+    Channel* pollLine(char* line) override { return nullptr; };
+    void     flushRx() override {}
+
+    bool   lineComplete(char*, char) override { return false; }
+    size_t timedReadBytes(char* buffer, size_t length, TickType_t timeout) override { return 0; }
+
+    // Configuration handlers:
+    void validate() override {}
+
+    void afterParse() override {};
+
+    void group(Configuration::HandlerBase& handler) override {}
+
+};
+
+#endif // NO_OLED

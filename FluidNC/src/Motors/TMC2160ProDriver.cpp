@@ -1,6 +1,6 @@
 // Copyright (c) 2020 -	Bart Dring
 // Use of this source code is governed by a GPLv3 license that can be found in the LICENSE file.
-
+#ifndef NO_TMC
 #include "TMC2160ProDriver.h"
 #include "../Machine/MachineConfig.h"
 #include <atomic>
@@ -12,3 +12,4 @@ namespace MotorDrivers {
         MotorFactory::InstanceBuilder<TMC2160Driver> registration("tmc_2160Pro");
     }
 }
+#endif // NO_TMC

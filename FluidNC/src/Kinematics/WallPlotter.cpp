@@ -1,3 +1,4 @@
+#ifndef ONLY_CARTESIAN
 #include "WallPlotter.h"
 
 #include "../Machine/MachineConfig.h"
@@ -242,3 +243,4 @@ namespace Kinematics {
         KinematicsFactory::InstanceBuilder<WallPlotter> registration("WallPlotter");
     }
 }
+#endif // ONLY_CARTESIAN

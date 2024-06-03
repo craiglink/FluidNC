@@ -12,7 +12,7 @@
     https://emanual.robotis.com/docs/en/dxl/protocol2/
 
 */
-
+#ifndef NO_SERVO
 #include "Dynamixel2.h"
 
 #include "../Machine/MachineConfig.h"
@@ -356,3 +356,4 @@ namespace MotorDrivers {
         MotorFactory::InstanceBuilder<Dynamixel2> registration("dynamixel2");
     }
 }
+#endif // NO_SERVO

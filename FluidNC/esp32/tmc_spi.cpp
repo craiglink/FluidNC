@@ -34,7 +34,7 @@
 
 // This code assumes that the SPI bus has already been initialized,
 // with SCK, MOSI, and MISO pins assigned, via SPIBus.cpp
-
+#ifndef NO_TMC
 #include "src/Config.h"
 #include "esp32/tmc_spi_support.h"
 #include <TMCStepper.h>  // https://github.com/teemuatlut/TMCStepper
@@ -92,3 +92,4 @@ uint32_t TMC2130Stepper::read(uint8_t reg) {
 
     return data;
 }
+#endif // NO_TMC

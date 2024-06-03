@@ -1,3 +1,4 @@
+#ifndef ONLY_CARTESIAN
 #include "ParallelDelta.h"
 
 #include "../Machine/MachineConfig.h"
@@ -369,3 +370,4 @@ namespace Kinematics {
         KinematicsFactory::InstanceBuilder<ParallelDelta> registration("parallel_delta");
     }
 }
+#endif // ONLY_CARTESIAN

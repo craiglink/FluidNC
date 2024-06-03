@@ -4,7 +4,7 @@
 /*
     This is used for Trinamic SPI controlled stepper motor drivers.
 */
-
+#ifndef NO_TMC
 #include "TMC2130Driver.h"
 #include "../Machine/MachineConfig.h"
 #include <atomic>
@@ -110,3 +110,4 @@ namespace MotorDrivers {
         MotorFactory::InstanceBuilder<TMC2130Driver> registration("tmc_2130");
     }
 }
+#endif // NO_TMC

@@ -5,7 +5,7 @@
 // by a C compiler instead of a C++ compiler because of a problem in the
 // ESP32_S3 version of esp_addr.h .  It defines a FLAG_ATTR() macro in a
 // way that causes compiler error on spi_ll.h
-
+#ifndef NO_TMC
 #include "hal/spi_ll.h"
 
 #include <sdkconfig.h>
@@ -91,3 +91,4 @@ void tmc_spi_rw_reg(uint8_t cmd, uint32_t data, int index) {
 
     tmc_spi_transfer_data(out, total_bits, NULL, 0);
 }
+#endif // NO_TMC

@@ -26,7 +26,9 @@ namespace WebUI {
 #    include <WiFi.h>
 #    include "Driver/localfs.h"
 #    include <ESPmDNS.h>
+#ifndef NO_GLOBAL_ARDUINOOTA
 #    include <ArduinoOTA.h>
+#endif
 #    include "WebSettings.h"
 
 namespace WebUI {
@@ -42,6 +44,7 @@ namespace WebUI {
             return false;
         }
 
+#ifndef NO_GLOBAL_ARDUINOOTA
         ArduinoOTA
             .onStart([]() {
                 const char* type;
@@ -81,6 +84,8 @@ namespace WebUI {
                 log_info("OTA Error(" << error << "):" << errorName);
             });
         ArduinoOTA.begin();
+#endif // NO_GLOBAL_ARDUINOOTA
+
         //no need in AP mode
         if (WiFi.getMode() == WIFI_STA && WebUI::wifi_sta_ssdp->get()) {
             //start mDns
@@ -105,9 +110,10 @@ namespace WebUI {
         telnetServer.end();
         webServer.end();
 
+#ifndef NO_GLOBAL_ARDUINOOTA
         //stop OTA
         ArduinoOTA.end();
-
+#endif
         //Stop mDNS
         MDNS.end();
     }
@@ -122,7 +128,9 @@ namespace WebUI {
                 WiFi.enableSTA(false);
             }
         }
+#ifndef NO_GLOBAL_ARDUINOOTA
         ArduinoOTA.handle();
+#endif        
         webServer.handle();
         telnetServer.handle();
     }
