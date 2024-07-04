@@ -694,7 +694,7 @@ namespace WebUI {
 
         WiFi.enableAP(false);
 
-        // Set the number of receive and transmit buffers that the
+        // Se   t the number of receive and transmit buffers that the
         // WiFi stack can use.  Making these numbers too large
         // can eat up a lot of memory at 1.6K per buffer.  It
         // can be especially bad when there are many dynamic buffers,
