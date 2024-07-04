@@ -142,7 +142,9 @@ namespace WebUI {
         { "WPA2-ENTERPRISE", WIFI_AUTH_WPA2_ENTERPRISE },
     };
 
-    static void print_mac(Channel& out, const char* prefix, const char* mac) { log_stream(out, prefix << " (" << mac << ")"); }
+    static void print_mac(Channel& out, const char* prefix, const char* mac) {
+        log_stream(out, prefix << " (" << mac << ")");
+    }
 
     static Error showIP(const char* parameter, AuthenticationLevel auth_level, Channel& out) {  // ESP111
         log_stream(out, parameter << IP_string(WiFi.getMode() == WIFI_STA ? WiFi.localIP() : WiFi.softAPIP()));
@@ -546,7 +548,8 @@ namespace WebUI {
     std::string WiFiConfig::station_info() {
         std::string result;
 
-        if ((WiFi.getMode() == WIFI_MODE_STA) || (WiFi.getMode() == WIFI_MODE_APSTA)) {
+        auto mode = WiFi.getMode();
+        if (mode == WIFI_MODE_STA || mode == WIFI_MODE_APSTA) {
             result += "Mode=STA:SSID=";
             result += WiFi.SSID().c_str();
             result += ":Status=";
@@ -564,7 +567,8 @@ namespace WebUI {
     std::string WiFiConfig::ap_info() {
         std::string result;
 
-        if ((WiFi.getMode() == WIFI_MODE_AP) || (WiFi.getMode() == WIFI_MODE_APSTA)) {
+        auto mode = WiFi.getMode();
+        if (mode == WIFI_MODE_AP || mode == WIFI_MODE_APSTA) {
             if (WiFi.getMode() == WIFI_MODE_APSTA) {
                 result += "]\n[MSG:";
             }
@@ -679,10 +683,12 @@ namespace WebUI {
         //stop active service
         wifi_services.end();
         //Sanity check
-        if ((WiFi.getMode() == WIFI_STA) || (WiFi.getMode() == WIFI_AP_STA)) {
+        auto mode = WiFi.getMode();
+        if (mode == WIFI_STA || mode == WIFI_AP_STA) {
             WiFi.disconnect();
         }
-        if ((WiFi.getMode() == WIFI_AP) || (WiFi.getMode() == WIFI_AP_STA)) {
+
+        if (mode == WIFI_AP || mode == WIFI_AP_STA) {
             WiFi.softAPdisconnect();
         }
 
@@ -879,7 +885,9 @@ namespace WebUI {
     /**
      * End WiFi
      */
-    void WiFiConfig::end() { StopWiFi(); }
+    void WiFiConfig::end() {
+        StopWiFi();
+    }
 
     /**
      * Reset ESP
@@ -899,12 +907,16 @@ namespace WebUI {
         }
         log_info("WiFi reset done");
     }
-    bool WiFiConfig::isOn() { return !(WiFi.getMode() == WIFI_MODE_NULL); }
+    bool WiFiConfig::isOn() {
+        return !(WiFi.getMode() == WIFI_MODE_NULL);
+    }
 
     /**
      * Handle not critical actions that must be done in sync environment
      */
-    void WiFiConfig::handle() { wifi_services.handle(); }
+    void WiFiConfig::handle() {
+        wifi_services.handle();
+    }
 
     // Used by js/scanwifidlg.js
 
@@ -952,6 +964,8 @@ namespace WebUI {
         return Error::Ok;
     }
 
-    WiFiConfig::~WiFiConfig() { end(); }
+    WiFiConfig::~WiFiConfig() {
+        end();
+    }
 }
 #endif
